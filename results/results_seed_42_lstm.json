@@ -1,0 +1,30 @@
+{
+  "seed": 42,
+  "config_path": "D:\\pythonProject\\015assignment\\sentiment-analysis-project\\configs\\lstm_quickcheck.json",
+  "epochs": [
+    {
+      "epoch": 1,
+      "train": {
+        "loss": 0.694336986541748,
+        "accuracy": 0.52,
+        "precision": 0.5144927536231884,
+        "recall": 0.45050761421319796,
+        "f1": 0.4803788903924222
+      },
+      "val": {
+        "loss": 0.6951956301927567,
+        "accuracy": 0.52,
+        "precision": 0.5478260869565217,
+        "recall": 0.5887850467289719,
+        "f1": 0.5675675675675675
+      }
+    }
+  ],
+  "test": {
+    "loss": 0.6893666833639145,
+    "accuracy": 0.5,
+    "precision": 0.415929203539823,
+    "recall": 0.5802469135802469,
+    "f1": 0.4845360824742268
+  }
+}
