@@ -4,13 +4,26 @@
 
 ## 环境与依赖
 
-- Python >= 3.8
-- GPU 可选（建议使用 CUDA 以加速 BERT 与 RNN 训练）
+- Python >= 3.8（已在本项目中使用 `3.8.x`）
+- 建议使用 GPU（CUDA 11.8 + cuDNN），示例环境：`conda env pytorch-gpu-11.8`
 
 安装依赖：
 
 ```
 pip install -r requirements.txt
+```
+
+激活 GPU 环境（Windows PowerShell）：
+
+```
+conda activate pytorch-gpu-11.8
+```
+
+如遇 SSL 证书问题（下载 Hugging Face 资源失败），可启用离线模式使用本地缓存：
+
+```
+$env:TRANSFORMERS_OFFLINE = "1"
+$env:HF_HUB_OFFLINE = "1"
 ```
 
 ## 数据
@@ -50,14 +63,21 @@ sentiment-analysis-project/
 
 ## 运行示例
 
-在项目根目录下运行（确保使用你希望的 Python 环境）：
+在项目根目录下运行（确保使用目标 Python/Conda 环境）：
 
 ```
+# RNN系列
 python src/main.py --config configs/rnn_random_embed.json
 python src/main.py --config configs/rnn_glove_frozen.json
 python src/main.py --config configs/rnn_glove_finetune.json
-python src/main.py --config configs/bert_freeze.json
-python src/main.py --config configs/bert_finetune.json
+
+# BERT系列
+python src/main.py --config configs/bert_freeze.json   # 冻结全部或多数层
+python src/main.py --config configs/bert_finetune.json # 微调更多层
+python src/main.py --config configs/bert_fast.json     # 加速版配置（低max_length/少解冻层）
+
+# 正式配置示例（较长训练）
+python src/main.py --config configs/bert_formal.json
 ```
 
 说明：
@@ -75,6 +95,10 @@ python src/main.py --config configs/bert_finetune.json
 - `max_length`: 序列最大长度（RNN 与 BERT 可分别配置）
 - 其他超参数：学习率、批大小、dropout、隐藏层维度、双向与否、BERT 解冻层数等。
 
+BERT 冻结/微调相关：
+- `freeze_all`: `true/false`，是否冻结全部 BERT 参数。
+- `unfreeze_layers`: 解冻的后向层数，如 `2` 表示解冻最后两层。
+
 ## 结果分析（analysis/）
 
 - `1_plot_learning_curves.ipynb`: 加载 `results/` 中的训练日志，绘制训练/验证 Loss 与 Accuracy 曲线。
@@ -87,6 +111,21 @@ python src/main.py --config configs/bert_finetune.json
 - 仅用训练集构建词表，处理 OOV。
 - RNN：根据配置选择随机嵌入或加载 GloVe，并选择冻结/微调策略。
 - BERT：根据配置选择冻结全部或仅解冻最后若干层。
+
+## 日志与输出（可读性增强）
+
+- 训练日志现在包含清晰的轮次边界：`===== Epoch X/Y =====`。
+- 每轮结束打印训练/验证汇总：`loss` 与 `acc`（准确率）。
+- 完成全部轮次后打印测试集汇总并保存产物：
+  - 结果：`results/results_seed_<seed>_<model>.json`
+  - 权重：`models_checkpoints/model_seed_<seed>_<model>.pt`
+- tqdm 进度条在每轮结束后保留，便于回看每轮耗时与速度。
+
+## 常见问题
+
+- SSL 错误：启用离线模式（见上文），或检查本地证书与网络代理。
+- 速度慢：使用 `configs/bert_fast.json`，或降低 `max_length`、`sample_size`。
+- GPU 未启用：确认 `conda activate pytorch-gpu-11.8`，以及 `torch.cuda.is_available() == True`。
 
 ## 注意事项
 
