@@ -84,8 +84,17 @@ def run(config_path: str) -> None:
     optimizer = torch.optim.Adam(params, lr=learning_rate, weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss()
 
+    # Readable startup summary
+    print(f"Device: {device}")
+    print(
+        f"Start training: {num_epochs} epochs | model: {model.__class__.__name__} | "
+        f"lr={learning_rate} | weight_decay={weight_decay} | clip={gradient_clip}"
+    )
+
     history = {"seed": seed, "config_path": config_path, "epochs": []}
     for epoch in range(1, num_epochs + 1):
+        # Epoch header for clearer logs
+        print(f"\n===== Epoch {epoch}/{num_epochs} =====")
         train_metrics = train_lib.train_epoch(
             model,
             loaders["train_loader"],
@@ -95,6 +104,14 @@ def run(config_path: str) -> None:
             gradient_clip=gradient_clip,
         )
         val_metrics = train_lib.evaluate(model, loaders["val_loader"], criterion, device)
+        # Compact epoch summary
+        tm_acc = train_metrics.get("accuracy")
+        vm_acc = val_metrics.get("accuracy")
+        print(
+            "Epoch summary | "
+            f"Train: loss={train_metrics['loss']:.4f}, acc={(tm_acc if tm_acc is not None else float('nan')):.4f} | "
+            f"Val: loss={val_metrics['loss']:.4f}, acc={(vm_acc if vm_acc is not None else float('nan')):.4f}"
+        )
         history["epochs"].append({
             "epoch": epoch,
             "train": train_metrics,
@@ -104,6 +121,12 @@ def run(config_path: str) -> None:
     # Final evaluation on test set
     test_metrics = train_lib.evaluate(model, loaders["test_loader"], criterion, device)
     history["test"] = test_metrics
+    # Final test summary
+    t_acc = test_metrics.get("accuracy")
+    print(
+        "\n===== Test Results =====\n" 
+        f"Test: loss={test_metrics['loss']:.4f}, acc={(t_acc if t_acc is not None else float('nan')):.4f}"
+    )
 
     # Save results and checkpoint
     root = os.path.dirname(SRC_DIR)

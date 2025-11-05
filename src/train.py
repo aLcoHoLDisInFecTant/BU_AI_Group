@@ -33,7 +33,7 @@ def train_epoch(
     losses = []
     all_preds, all_labels = [], []
 
-    for batch in tqdm(dataloader, desc="Train", leave=False):
+    for batch in tqdm(dataloader, desc="Train", leave=True):
         optimizer.zero_grad()
         logits = _forward_batch(model, batch, device)
         loss = criterion(logits, batch["label"].to(device))
@@ -63,7 +63,7 @@ def evaluate(
     all_preds, all_labels = [], []
 
     with torch.no_grad():
-        for batch in tqdm(dataloader, desc="Eval", leave=False):
+        for batch in tqdm(dataloader, desc="Eval", leave=True):
             logits = _forward_batch(model, batch, device)
             loss = criterion(logits, batch["label"].to(device))
             losses.append(loss.item())
