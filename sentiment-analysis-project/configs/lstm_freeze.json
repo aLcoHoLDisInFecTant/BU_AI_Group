@@ -1,0 +1,25 @@
+{
+  "model_type": "lstm",
+  "seed": 42,
+  "csv_path": "../data/IMDB Dataset.csv",
+  "sample_size": 8000,
+  "train_val_test_split": [0.8, 0.1, 0.1],
+
+  "batch_size": 64,
+  "num_epochs": 3,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0,
+  "max_length": 200,
+  "min_freq": 2,
+
+  "embedding_mode": "glove_frozen",
+  "embedding_dim": 100,
+  "glove_path": "../data/glove/glove.6B.100d.txt",
+
+  "rnn_hidden_dim": 256,
+  "rnn_num_layers": 2,
+  "bidirectional": true,
+  "dropout": 0.3,
+  "gradient_clip": 1.0,
+  "num_classes": 2
+}
