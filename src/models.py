@@ -3,7 +3,7 @@ from typing import Dict, Any, Optional
 
 import torch
 import torch.nn as nn
-from transformers import AutoModel
+from transformers import AutoModel, AutoConfig
 
 
 class RNNClassifier(nn.Module):
@@ -58,9 +58,14 @@ class BERTClassifier(nn.Module):
         dropout: float = 0.1,
         freeze_all: bool = False,
         unfreeze_layers: int = 0,
+        random_init: bool = False,
     ):
         super().__init__()
-        self.bert = AutoModel.from_pretrained(bert_model_name)
+        if random_init:
+            bert_config = AutoConfig.from_pretrained(bert_model_name)
+            self.bert = AutoModel.from_config(bert_config)
+        else:
+            self.bert = AutoModel.from_pretrained(bert_model_name)
         hidden_size = self.bert.config.hidden_size
         self.dropout = nn.Dropout(dropout)
         self.fc = nn.Linear(hidden_size, num_classes)

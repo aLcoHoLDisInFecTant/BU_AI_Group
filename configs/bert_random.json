@@ -1,5 +1,5 @@
 {
-  "model_type": "bert",
+  "model_type": "bert_random",
   "seed": 42,
   "csv_path": "../data/IMDB Dataset.csv",
   "sample_size": 0,
@@ -10,8 +10,10 @@
   "weight_decay": 0.01,
   "max_length": 256,
   "bert_model_name": "bert-base-uncased",
-  "freeze_all": true,
+  "freeze_all": false,
   "unfreeze_layers": 0,
   "gradient_clip": 1.0,
-  "num_classes": 2
+  "num_classes": 2,
+  "random_bert_init": true
 }
+

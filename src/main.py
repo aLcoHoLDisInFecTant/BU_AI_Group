@@ -73,12 +73,14 @@ def build_model(config: Dict[str, Any], rnn_vocab: Dict[str, int]) -> torch.nn.M
         dropout = float(config.get("dropout", 0.1))
         freeze_all = bool(config.get("freeze_all", False))
         unfreeze_layers = int(config.get("unfreeze_layers", 0))
+        random_init = bool(config.get("random_bert_init", False))
         model = BERTClassifier(
             bert_model_name=bert_model_name,
             num_classes=num_classes,
             dropout=dropout,
             freeze_all=freeze_all,
             unfreeze_layers=unfreeze_layers,
+            random_init=random_init,
         )
     return model
 

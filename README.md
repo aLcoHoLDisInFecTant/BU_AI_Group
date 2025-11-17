@@ -74,6 +74,7 @@ python src/main.py --config configs/rnn_glove_finetune.json
 # BERT系列
 python src/main.py --config configs/bert_freeze.json   # 冻结全部或多数层
 python src/main.py --config configs/bert_finetune.json # 微调更多层
+python src/main.py --config configs/bert_random.json   # 随机初始化BERT从头训练
 python src/main.py --config configs/bert_fast.json     # 加速版配置（低max_length/少解冻层）
 
 # 正式配置示例（较长训练）
