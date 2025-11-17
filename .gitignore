@@ -1,0 +1,8 @@
+sentiment-analysis-project/models_checkpoints/
+sentiment-analysis-project/results/
+sentiment-analysis-project/src/__pycache__/
+sentiment-analysis-project/data/
+*.pt
+*.pyc
+*.log
+**/.ipynb_checkpoints/
