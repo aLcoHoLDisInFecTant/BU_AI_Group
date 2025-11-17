@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from tqdm import tqdm
 
-from utils import calculate_metrics
+from utils import calculate_metrics, compute_confusion_matrix, compute_error_buckets
 
 
 def _forward_batch(model, batch, device):
@@ -60,7 +60,7 @@ def evaluate(
 ) -> Dict[str, Any]:
     model.eval()
     losses = []
-    all_preds, all_labels = [], []
+    all_preds, all_labels, all_lengths = [], [], []
 
     with torch.no_grad():
         for batch in tqdm(dataloader, desc="Eval", leave=True):
@@ -71,6 +71,17 @@ def evaluate(
             labels = batch["label"].cpu().numpy()
             all_preds.extend(preds.tolist())
             all_labels.extend(labels.tolist())
+            if "length" in batch:
+                lengths = batch["length"].cpu().numpy()
+                all_lengths.extend(lengths.tolist())
 
-    metrics = calculate_metrics(np.array(all_preds), np.array(all_labels))
-    return {"loss": float(np.mean(losses)), **metrics}
+    preds_arr = np.array(all_preds)
+    labels_arr = np.array(all_labels)
+    metrics = calculate_metrics(preds_arr, labels_arr)
+    result: Dict[str, Any] = {"loss": float(np.mean(losses)), **metrics}
+    if labels_arr.size:
+        result["confusion_matrix"] = compute_confusion_matrix(preds_arr, labels_arr)
+    if all_lengths and len(all_lengths) == len(all_labels):
+        lengths_arr = np.array(all_lengths)
+        result["error_buckets"] = compute_error_buckets(lengths_arr, labels_arr, preds_arr)
+    return result

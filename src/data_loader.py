@@ -81,9 +81,11 @@ class TextDatasetRNN(Dataset):
     def __getitem__(self, idx):
         tokens = tokenize_basic(self.texts[idx])
         ids = encode_text(tokens, self.vocab, self.max_length)
+        length = min(len(tokens), self.max_length)
         return {
             "input_ids": torch.tensor(ids, dtype=torch.long),
             "label": torch.tensor(self.labels[idx], dtype=torch.long),
+            "length": torch.tensor(length, dtype=torch.long),
         }
 
 
@@ -105,10 +107,12 @@ class TextDatasetBERT(Dataset):
             max_length=self.max_length,
             return_tensors=None,
         )
+        length = int(sum(enc["attention_mask"]))
         return {
             "input_ids": torch.tensor(enc["input_ids"], dtype=torch.long),
             "attention_mask": torch.tensor(enc["attention_mask"], dtype=torch.long),
             "label": torch.tensor(self.labels[idx], dtype=torch.long),
+            "length": torch.tensor(length, dtype=torch.long),
         }
 
 

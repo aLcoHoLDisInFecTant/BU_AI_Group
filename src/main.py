@@ -17,6 +17,28 @@ import train as train_lib
 from models import RNNClassifier, BERTClassifier, load_glove_embeddings
 
 
+def log_evaluation_diagnostics(split_name: str, metrics: Dict[str, Any]) -> None:
+    cm = metrics.get("confusion_matrix")
+    if cm:
+        print(f"\n[{split_name}] Confusion Matrix (rows=true, cols=pred):")
+        for row in cm:
+            formatted = "  ".join(f"{int(val):5d}" for val in row)
+            print(f"  {formatted}")
+    buckets = metrics.get("error_buckets")
+    if buckets:
+        print(f"[{split_name}] Length Buckets:")
+        for name, stats in buckets.items():
+            total = stats["total"]
+            accuracy = stats["accuracy"]
+            errors = stats["errors"]
+            error_rate = stats["error_rate"] * 100
+            print(
+                f"  {name:<24} total={total:4d} "
+                f"acc={accuracy:.4f} errors={errors:4d} ({error_rate:.2f}%)"
+            )
+        print()
+
+
 def build_model(config: Dict[str, Any], rnn_vocab: Dict[str, int]) -> torch.nn.Module:
     model_type = config.get("model_type", "rnn")
     num_classes = int(config.get("num_classes", 2))
@@ -117,6 +139,7 @@ def run(config_path: str) -> None:
             "train": train_metrics,
             "val": val_metrics,
         })
+        log_evaluation_diagnostics("Val", val_metrics)
 
     # Final evaluation on test set
     test_metrics = train_lib.evaluate(model, loaders["test_loader"], criterion, device)
@@ -127,6 +150,7 @@ def run(config_path: str) -> None:
         "\n===== Test Results =====\n" 
         f"Test: loss={test_metrics['loss']:.4f}, acc={(t_acc if t_acc is not None else float('nan')):.4f}"
     )
+    log_evaluation_diagnostics("Test", test_metrics)
 
     # Save results and checkpoint
     root = os.path.dirname(SRC_DIR)

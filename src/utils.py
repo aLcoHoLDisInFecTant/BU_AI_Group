@@ -1,11 +1,11 @@
 import os
 import json
 import random
-from typing import Dict, Any
+from typing import Dict, Any, List, Tuple
 
 import numpy as np
 import torch
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 
 
 def set_seed(seed: int) -> None:
@@ -34,6 +34,47 @@ def calculate_metrics(predictions: np.ndarray, labels: np.ndarray) -> Dict[str, 
         "recall": float(recall),
         "f1": float(f1),
     }
+
+
+def compute_confusion_matrix(predictions: np.ndarray, labels: np.ndarray) -> List[List[int]]:
+    """Return 2x2 confusion matrix [[tn, fp], [fn, tp]]."""
+    if predictions.size == 0:
+        return []
+    cm = confusion_matrix(labels, predictions, labels=[0, 1])
+    return cm.tolist()
+
+
+ERROR_BUCKETS: List[Tuple[str, int, int]] = [
+    ("short (<80 tokens)", 0, 80),
+    ("medium (80-160 tokens)", 80, 160),
+    ("long (>=160 tokens)", 160, 10_000),
+]
+
+
+def compute_error_buckets(
+    lengths: np.ndarray,
+    labels: np.ndarray,
+    predictions: np.ndarray,
+) -> Dict[str, Dict[str, float]]:
+    """Group accuracy stats by length buckets."""
+    if lengths.size == 0 or lengths.shape[0] != labels.shape[0]:
+        return {}
+    buckets: Dict[str, Dict[str, float]] = {}
+    for name, low, high in ERROR_BUCKETS:
+        mask = (lengths >= low) & (lengths < high)
+        total = int(mask.sum())
+        if total == 0:
+            continue
+        correct = int((predictions[mask] == labels[mask]).sum())
+        errors = total - correct
+        buckets[name] = {
+            "total": total,
+            "correct": correct,
+            "errors": errors,
+            "accuracy": float(correct / total),
+            "error_rate": float(errors / total),
+        }
+    return buckets
 
 
 def save_json(obj: Dict[str, Any], path: str) -> None:

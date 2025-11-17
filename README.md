@@ -116,6 +116,7 @@ BERT 冻结/微调相关：
 
 - 训练日志现在包含清晰的轮次边界：`===== Epoch X/Y =====`。
 - 每轮结束打印训练/验证汇总：`loss` 与 `acc`（准确率）。
+- 验证与测试阶段会额外打印混淆矩阵，以及按文本长度分桶的准确率/错误率，方便快速定位问题场景。
 - 完成全部轮次后打印测试集汇总并保存产物：
   - 结果：`results/results_seed_<seed>_<model>.json`
   - 权重：`models_checkpoints/model_seed_<seed>_<model>.pt`
