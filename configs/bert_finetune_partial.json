@@ -1,0 +1,18 @@
+{
+  "model_type": "bert",
+  "seed": 42,
+  "csv_path": "../data/IMDB Dataset.csv",
+  "sample_size": 0,
+  "train_val_test_split": [0.8, 0.1, 0.1],
+  "batch_size": 16,
+  "num_epochs": 5,
+  "learning_rate": 2e-5,
+  "weight_decay": 0.01,
+  "max_length": 256,
+  "bert_model_name": "bert-base-uncased",
+  "freeze_all": false,
+  "unfreeze_layers": 4,
+  "gradient_clip": 1.0,
+  "num_classes": 2
+}
+
