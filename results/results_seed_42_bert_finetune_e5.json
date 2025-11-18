@@ -1,0 +1,296 @@
+{
+  "seed": 42,
+  "config_path": "D:\\pythonProject\\015assignment\\sentiment-analysis-project\\configs\\bert_finetune.json",
+  "epochs": [
+    {
+      "epoch": 1,
+      "train": {
+        "loss": 0.4214059577703476,
+        "accuracy": 0.809575,
+        "precision": 0.8076903969397387,
+        "recall": 0.8127374525094981,
+        "f1": 0.8102060648344255
+      },
+      "val": {
+        "loss": 0.5888924127141126,
+        "accuracy": 0.7574,
+        "precision": 0.6823427582227352,
+        "recall": 0.9547840129188534,
+        "f1": 0.795894329463234,
+        "confusion_matrix": [
+          [
+            1422,
+            1101
+          ],
+          [
+            112,
+            2365
+          ]
+        ],
+        "error_buckets": {
+          "short (<80 tokens)": {
+            "total": 220,
+            "correct": 190,
+            "errors": 30,
+            "accuracy": 0.8636363636363636,
+            "error_rate": 0.13636363636363635
+          },
+          "medium (80-160 tokens)": {
+            "total": 1023,
+            "correct": 818,
+            "errors": 205,
+            "accuracy": 0.7996089931573802,
+            "error_rate": 0.20039100684261973
+          },
+          "long (>=160 tokens)": {
+            "total": 3757,
+            "correct": 2779,
+            "errors": 978,
+            "accuracy": 0.7396859196167155,
+            "error_rate": 0.2603140803832845
+          }
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "train": {
+        "loss": 0.4554733414947987,
+        "accuracy": 0.794425,
+        "precision": 0.7915656090679603,
+        "recall": 0.7994401119776045,
+        "f1": 0.7954833735419206
+      },
+      "val": {
+        "loss": 0.4140144007893416,
+        "accuracy": 0.8156,
+        "precision": 0.8164428164428165,
+        "recall": 0.8098506257569641,
+        "f1": 0.8131333603567086,
+        "confusion_matrix": [
+          [
+            2072,
+            451
+          ],
+          [
+            471,
+            2006
+          ]
+        ],
+        "error_buckets": {
+          "short (<80 tokens)": {
+            "total": 220,
+            "correct": 191,
+            "errors": 29,
+            "accuracy": 0.8681818181818182,
+            "error_rate": 0.1318181818181818
+          },
+          "medium (80-160 tokens)": {
+            "total": 1023,
+            "correct": 878,
+            "errors": 145,
+            "accuracy": 0.8582600195503421,
+            "error_rate": 0.14173998044965788
+          },
+          "long (>=160 tokens)": {
+            "total": 3757,
+            "correct": 3009,
+            "errors": 748,
+            "accuracy": 0.8009049773755657,
+            "error_rate": 0.19909502262443438
+          }
+        }
+      }
+    },
+    {
+      "epoch": 3,
+      "train": {
+        "loss": 0.4504440392553806,
+        "accuracy": 0.805,
+        "precision": 0.7990590080376396,
+        "recall": 0.8150369926014797,
+        "f1": 0.8069689170461293
+      },
+      "val": {
+        "loss": 0.43875891130905564,
+        "accuracy": 0.8046,
+        "precision": 0.833926981300089,
+        "recall": 0.7561566410981025,
+        "f1": 0.7931399534194368,
+        "confusion_matrix": [
+          [
+            2150,
+            373
+          ],
+          [
+            604,
+            1873
+          ]
+        ],
+        "error_buckets": {
+          "short (<80 tokens)": {
+            "total": 220,
+            "correct": 190,
+            "errors": 30,
+            "accuracy": 0.8636363636363636,
+            "error_rate": 0.13636363636363635
+          },
+          "medium (80-160 tokens)": {
+            "total": 1023,
+            "correct": 859,
+            "errors": 164,
+            "accuracy": 0.8396871945259042,
+            "error_rate": 0.1603128054740958
+          },
+          "long (>=160 tokens)": {
+            "total": 3757,
+            "correct": 2974,
+            "errors": 783,
+            "accuracy": 0.7915890338035667,
+            "error_rate": 0.20841096619643332
+          }
+        }
+      }
+    },
+    {
+      "epoch": 4,
+      "train": {
+        "loss": 0.4648777277052403,
+        "accuracy": 0.796,
+        "precision": 0.7973488652339827,
+        "recall": 0.7938412317536493,
+        "f1": 0.7955911823647294
+      },
+      "val": {
+        "loss": 0.43966329197723647,
+        "accuracy": 0.805,
+        "precision": 0.8358676207513417,
+        "recall": 0.754541784416633,
+        "f1": 0.7931253978357734,
+        "confusion_matrix": [
+          [
+            2156,
+            367
+          ],
+          [
+            608,
+            1869
+          ]
+        ],
+        "error_buckets": {
+          "short (<80 tokens)": {
+            "total": 220,
+            "correct": 186,
+            "errors": 34,
+            "accuracy": 0.8454545454545455,
+            "error_rate": 0.15454545454545454
+          },
+          "medium (80-160 tokens)": {
+            "total": 1023,
+            "correct": 859,
+            "errors": 164,
+            "accuracy": 0.8396871945259042,
+            "error_rate": 0.1603128054740958
+          },
+          "long (>=160 tokens)": {
+            "total": 3757,
+            "correct": 2980,
+            "errors": 777,
+            "accuracy": 0.7931860527016237,
+            "error_rate": 0.20681394729837638
+          }
+        }
+      }
+    },
+    {
+      "epoch": 5,
+      "train": {
+        "loss": 0.4782452148735523,
+        "accuracy": 0.785925,
+        "precision": 0.7825915131156449,
+        "recall": 0.7919416116776644,
+        "f1": 0.7872388004074838
+      },
+      "val": {
+        "loss": 0.4179905357833107,
+        "accuracy": 0.8152,
+        "precision": 0.811722199919711,
+        "recall": 0.8163100524828422,
+        "f1": 0.8140096618357486,
+        "confusion_matrix": [
+          [
+            2054,
+            469
+          ],
+          [
+            455,
+            2022
+          ]
+        ],
+        "error_buckets": {
+          "short (<80 tokens)": {
+            "total": 220,
+            "correct": 182,
+            "errors": 38,
+            "accuracy": 0.8272727272727273,
+            "error_rate": 0.17272727272727273
+          },
+          "medium (80-160 tokens)": {
+            "total": 1023,
+            "correct": 856,
+            "errors": 167,
+            "accuracy": 0.8367546432062561,
+            "error_rate": 0.16324535679374388
+          },
+          "long (>=160 tokens)": {
+            "total": 3757,
+            "correct": 3038,
+            "errors": 719,
+            "accuracy": 0.8086239020495076,
+            "error_rate": 0.1913760979504924
+          }
+        }
+      }
+    }
+  ],
+  "test": {
+    "loss": 0.38918387675628113,
+    "accuracy": 0.8354,
+    "precision": 0.8411102172164119,
+    "recall": 0.8300913060738389,
+    "f1": 0.8355644355644356,
+    "confusion_matrix": [
+      [
+        2086,
+        395
+      ],
+      [
+        428,
+        2091
+      ]
+    ],
+    "error_buckets": {
+      "short (<80 tokens)": {
+        "total": 242,
+        "correct": 203,
+        "errors": 39,
+        "accuracy": 0.8388429752066116,
+        "error_rate": 0.16115702479338842
+      },
+      "medium (80-160 tokens)": {
+        "total": 1024,
+        "correct": 892,
+        "errors": 132,
+        "accuracy": 0.87109375,
+        "error_rate": 0.12890625
+      },
+      "long (>=160 tokens)": {
+        "total": 3734,
+        "correct": 3082,
+        "errors": 652,
+        "accuracy": 0.8253883235136583,
+        "error_rate": 0.17461167648634174
+      }
+    }
+  }
+}
