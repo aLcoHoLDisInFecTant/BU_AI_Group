@@ -14,7 +14,7 @@ if SRC_DIR not in sys.path:
 import utils
 import data_loader
 import train as train_lib
-from models import RNNClassifier, BERTClassifier, load_glove_embeddings
+from models import RNNClassifier, LSTMClassifier, BERTClassifier, load_glove_embeddings
 
 
 def log_evaluation_diagnostics(split_name: str, metrics: Dict[str, Any]) -> None:
@@ -57,7 +57,8 @@ def build_model(config: Dict[str, Any], rnn_vocab: Dict[str, int]) -> torch.nn.M
                 glove_path = os.path.abspath(os.path.join(root, glove_path))
             if glove_path and os.path.exists(glove_path):
                 glove_weights = load_glove_embeddings(glove_path, rnn_vocab, embedding_dim)
-        model = RNNClassifier(
+        model_class = LSTMClassifier if model_type == "lstm" else RNNClassifier
+        model = model_class(
             vocab_size=len(rnn_vocab),
             embedding_dim=embedding_dim,
             hidden_dim=hidden_dim,

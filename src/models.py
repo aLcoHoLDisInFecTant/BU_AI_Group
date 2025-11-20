@@ -25,6 +25,48 @@ class RNNClassifier(nn.Module):
             self.embedding.weight.data.copy_(glove_weights)
             self.embedding.weight.requires_grad = embedding_mode == "glove_finetune"
 
+        self.rnn = nn.RNN(
+            input_size=embedding_dim,
+            hidden_size=hidden_dim,
+            num_layers=num_layers,
+            batch_first=True,
+            dropout=dropout if num_layers > 1 else 0.0,
+            bidirectional=bidirectional,
+        )
+        self.dropout = nn.Dropout(dropout)
+        self.fc = nn.Linear(hidden_dim * (2 if bidirectional else 1), num_classes)
+
+    def forward(self, input_ids: torch.Tensor) -> torch.Tensor:
+        emb = self.embedding(input_ids)
+        out, h_n = self.rnn(emb)
+        if self.rnn.bidirectional:
+            last_hidden = torch.cat((h_n[-2], h_n[-1]), dim=1)
+        else:
+            last_hidden = h_n[-1]
+        last_hidden = self.dropout(last_hidden)
+        logits = self.fc(last_hidden)
+        return logits
+
+
+class LSTMClassifier(nn.Module):
+    def __init__(
+        self,
+        vocab_size: int,
+        embedding_dim: int,
+        hidden_dim: int,
+        num_layers: int,
+        bidirectional: bool,
+        dropout: float,
+        num_classes: int,
+        embedding_mode: str = "random",
+        glove_weights: Optional[torch.Tensor] = None,
+    ):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=0)
+        if embedding_mode.startswith("glove") and glove_weights is not None:
+            self.embedding.weight.data.copy_(glove_weights)
+            self.embedding.weight.requires_grad = embedding_mode == "glove_finetune"
+
         self.lstm = nn.LSTM(
             input_size=embedding_dim,
             hidden_size=hidden_dim,
