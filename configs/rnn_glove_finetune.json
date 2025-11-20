@@ -15,7 +15,7 @@
   "glove_path": "../data/glove/glove.6B.100d.txt",
   "rnn_hidden_dim": 128,
   "rnn_num_layers": 2,
-  "bidirectional": true,
+  "bidirectional": false,
   "dropout": 0.3,
   "gradient_clip": 1.0,
   "num_classes": 2

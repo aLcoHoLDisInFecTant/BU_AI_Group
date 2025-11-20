@@ -52,10 +52,6 @@ sentiment-analysis-project/
 │   ├── train.py
 │   ├── main.py
 │   └── utils.py
-├── analysis/
-│   ├── 1_plot_learning_curves.ipynb
-│   ├── 2_compare_models.ipynb
-│   └── 3_error_analysis.ipynb
 ├── data/                # (gitignored) - 可选本地缓存目录
 ├── models_checkpoints/  # (gitignored)
 └── results/             # (gitignored)
@@ -100,13 +96,7 @@ BERT 冻结/微调相关：
 - `freeze_all`: `true/false`，是否冻结全部 BERT 参数。
 - `unfreeze_layers`: 解冻的后向层数，如 `2` 表示解冻最后两层。
 
-## 结果分析（analysis/）
-
-- `1_plot_learning_curves.ipynb`: 加载 `results/` 中的训练日志，绘制训练/验证 Loss 与 Accuracy 曲线。
-- `2_compare_models.ipynb`: 聚合不同模型、不同种子的 P/R/F1 进行对比，输出表格与可视化。
-- `3_error_analysis.ipynb`: 对最佳模型的测试集预测进行误差桶分析（否定词、讽刺、长度分组等）。
-
-## 复现实验建议
+## 复现实验
 
 - 固定随机种子（`utils.set_seed`）。
 - 仅用训练集构建词表，处理 OOV。
@@ -115,7 +105,7 @@ BERT 冻结/微调相关：
 
 ## 日志与输出（可读性增强）
 
-- 训练日志现在包含清晰的轮次边界：`===== Epoch X/Y =====`。
+- 训练日志包含轮次边界：`===== Epoch X/Y =====`。
 - 每轮结束打印训练/验证汇总：`loss` 与 `acc`（准确率）。
 - 验证与测试阶段会额外打印混淆矩阵，以及按文本长度分桶的准确率/错误率，方便快速定位问题场景。
 - 完成全部轮次后打印测试集汇总并保存产物：
@@ -128,8 +118,3 @@ BERT 冻结/微调相关：
 - SSL 错误：启用离线模式（见上文），或检查本地证书与网络代理。
 - 速度慢：使用 `configs/bert_fast.json`，或降低 `max_length`、`sample_size`。
 - GPU 未启用：确认 `conda activate pytorch-gpu-11.8`，以及 `torch.cuda.is_available() == True`。
-
-## 注意事项
-
-- 初次运行建议使用较小的 `sample_size` 与较短的 `max_length` 以验证流程。
-- 如需完整训练，请取消采样并增大训练轮数与长度。
